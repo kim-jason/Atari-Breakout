@@ -1,0 +1,146 @@
+=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=
+CIS 120 Game Project README
+PennKey: 37408558
+=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=
+
+===================
+=: Core Concepts :=
+===================
+
+- List the four core concepts, the features they implement, and why each feature
+  is an appropriate use of the concept. Incorporate the feedback you got after
+  submitting your proposal.
+
+  1. Collections: I have an ArrayList<Brick> in my GameCourt class. This 
+  arraylist contains all of the bricks (Brick, MovingBrick, MultipleHitBrick)
+  and stores them for convenience - you can easily get all of the bricks with
+  this Collection. There is no need to be concerned about the order of the 
+  bricks or the order of how the bricks are placed on screen, and so there was
+  no need to use any specific Collection type. I discussed the possibility of
+  using a different type of Collection (such as LinkedList or TreeSet) with 
+  multiple TAs and it seemed that there was no need for those specific 
+  advantages. The ArrayList allows for easy removal and addition of different
+  types of bricks, so the ArrayList type is the most convenient for this game.
+
+  2. I/O: I have a highscores.txt file that contains the top 10 scores for the
+  game. After every single game, the computer checks to see if your score is
+  high enough to be on the high score board. If not, the computer shows a table
+  with all top 10 scores, descending by score. If the user gets a high enough
+  score that is higher than the lowest score on the current list, another popup
+  comes up to prompt for your name. The prompt continues to prompt the user if 
+  there is an invalid or empty name that is entered. The text file is edited
+  to remove the lower score and input the new score with the user's name. Every 
+  time the game is run, this text file is parsed through and edited if needed.
+
+  3. Inheritance/Subtyping: My Brick class extends GameObj, and both the 
+  MovingBrick and MultipleHitBrick classes extend Brick. The Brick class
+  contains the basic constructor for the x and y lengths, colors, etc. 
+  MovingBrick objects use the same items, but the velocity is also modified to
+  allow it to move left and right. The MultipleHitBrick has a new method
+  that changes the object's color based off how many hits there are on the
+  object. There are such various aspects that MultipleHitBrick and MovingBrick
+  have as unique classes, but by extending Brick they get the valuable methods
+  from Brick and GameObj. 
+
+  4. JUnit: My tests are testing various aspects of my code that may not be 
+  visible to the user. For example, I need to make sure that my Collection is 
+  properly adding or removing Bricks. For example, a MovingBrick or Brick
+  object can be removed once it is hit, but a MultipleHitBrick has to be hit
+  three times before it is removed from the Collection. This JUnit class also
+  makes sure that the boundaries are taken care of, and that all objects are 
+  moderated to stay within boundaries with the clip() function. Intersection 
+  and willIntersect are tested nonvisually in this JUnit class, and visually
+  with the actual game itself. It is always good to test such methods both
+  visually so that we can see that it is working and nonvisually with actual
+  numerical positions and velocities.  
+
+
+=========================
+=: Your Implementation :=
+=========================
+
+- Provide an overview of each of the classes in your code, and what their
+  function is in the overall game.
+Brick: This class extends GameObj. This is the most basic brick that can be 
+placed on the screen. The multiple field variables contain the position,
+velocities, color, and other components of the Brick object that are used in the
+constructor we inherit from the GameObj class. The draw method simply draws the
+rectangle. The brick is one of the three objects that can be hit by the circle.
+
+Circle: This class extends GameObj. Many items are similar to Brick - it saves
+various features and components such as size, position, velocity, color, etc of
+the circle. The circle is able to bounce off the slider, walls, and bricks. If
+the circle hits the bottom of the screen, the user has lost. 
+
+Direction: An enum for UP, DOWN, LEFT, RIGHT.
+
+Game: Many of these lines of code were written in the Mushroom_of_Doom game 
+project that was given to us at the beginning of this project. It makes the 
+Frame, panels, reset button, and positions those frames and panels. 
+
+GameCourt: This makes the gamecourt for the Game class. It initializes the 
+screen size, velocity of the slider and circle. It has the method to read the
+left and right button inputs to allow the slider to move left and right. The 
+reset method places all the bricks on the screen. The tick method moves the 
+bricks, slider, and circle every x milliseconds. The class also parses through
+the highscores.txt file and updates the highscore file as well if needed. The
+class also provides popups to notify the user of the instructions at the 
+beginning of the game and also for their name if they get a high enough score.
+It also presents the high scores. 
+
+GameObj: This is the same class as from Mushroom_of_Doom. However, the 
+intersection between the circle and brick or circle and slider wasn't working
+properly so I had to write a new method to handle intersections between the two.
+Collision is not one of the four concepts that I decided to use, so the physics
+of the game isn't exactly too accurate, in that I simply add a random number
+from -2 to 2 to the vx. 
+
+MovingBrick: Extends the Brick class. This MovingBrick object has a velocity 
+that allows it to move left and right on the screen. Besides this, many of its
+components are the same as a Brick object. 
+
+MultipleHitBrick: Extends the Brick class. This MultipleHitBrick object needs
+to be hit three times before it is removed from the screen. For each number of
+hits, the color of the object is changed, from GREEN to YELLOW to PINK. 
+
+MyTests: My JUnit tests determine whether or not the Brick, MovingBrick, and
+MultipleHitBrick are properly added and removed from the Collection. This ways
+on how they are removed are different, which is why it is important to test in
+JUnit - although a Brick and a MovingBrick is removed after one hit, the 
+MultipleHitBrick needs to be hit three times before it is removed. It also tests
+other concepts and methods that are both visible and not visible by the user.
+
+
+- Were there any significant stumbling blocks while you were implementing your
+  game (related to your design, or otherwise)?
+It was difficult to implement the collision between the slider and the circle
+and the circle and the bricks. The initial intersection method that was provided
+in the Mushroom project was not properly working, so I made a new method. The
+MultipleHitBrick was difficult in implementing the color changes and keeping 
+track of the number of hits per brick. The high scores was difficult since you
+have to continuously keep the name and scores paired with each other. 
+
+- Evaluate your design. Is there a good separation of functionality? How well is
+  private state encapsulated? What would you refactor, if given the chance?
+I believe that the way I separated different objects and components by their 
+classes allows for easier testing and implementation. The three different bricks
+have their features in their unique classes. However, I would separate more the
+visual vs the backend processes more. Currently, a lot of the processes that 
+affect what is seen on the screen are intertwined with the backend processes, 
+and this sometimes makes testing a bit difficult. 
+
+========================
+=: External Resources :=
+========================
+
+- Cite any external resources (libraries, images, tutorials, etc.) that you may
+  have used while implementing your game.
+I needed something for the popups for the instructions and the high scores, and
+so I looked everything through the Oracle Docs to find a proper class for this 
+It is not permitted to look at tutorials and other means of education, but it is 
+permitted to look at the Java docs, since in past projects it was highly 
+encouraged to look at the documentations. I found JOptionPane on the 
+docs.oracle website, which is very easy to implement and effective for my 
+purposes.
+
+

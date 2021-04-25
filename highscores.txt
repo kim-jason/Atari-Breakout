@@ -1,0 +1,10 @@
+Paul 1800
+George 1400
+Michelle 1000
+Richard 910
+Steve 900
+Kim 800
+Doug 700
+Jason 600
+Tommy 550
+Kasra 540
